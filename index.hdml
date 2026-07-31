@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Sets character encoding and makes the site responsive on mobile devices -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Awesome Website</title>
+    <!-- Links our HTML file to our external CSS stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Main container for our website content -->
+    <main class="container">
+        <h1>Welcome to My Website!</h1>
+        <p>I built this from scratch using HTML, CSS, and JavaScript. Pretty cool, right?</p>
+        
+        <!-- Interactive button that will trigger our JavaScript function -->
+        <button id="colorBtn">Click Me to Change Color!</button>
+    </main>
+
+    <!-- Links our HTML file to our external JavaScript script -->
+    <script src="script.js"></script>
+</body>
+</html>
