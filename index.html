@@ -132,11 +132,11 @@
 
     <!-- Right Side: Basketball Game -->
     <div class="game-section">
-        <h2>Skill Basketball Challenge</h2>
+        <h2>Advanced Skill Challenge</h2>
         <div class="scoreboard">Score: <span id="score">0</span> | Shots: <span id="shots">0</span></div>
         <canvas id="gameCanvas" width="450" height="400"></canvas>
         <div class="game-instructions">
-            <strong>How to play:</strong> Click and drag backward from the basketball to set your aim and power. Release to shoot!
+            <strong>How to play:</strong> Click and drag backward from the ball to aim. Watch out for the moving defender block!
         </div>
     </div>
 
@@ -174,6 +174,17 @@
             height: 70
         };
 
+        // Moving Defender obstacle setup
+        const defender = {
+            x: 320,
+            y: 200,
+            width: 16,
+            height: 50,
+            speed: 1.5,
+            minY: 140,
+            maxY: 250
+        };
+
         let isAiming = false;
         let startX = 0;
         let startY = 0;
@@ -209,7 +220,6 @@
             const dx = startX - currentX;
             const dy = startY - currentY;
 
-            // Increased velocity multiplier from 0.14 to 0.22 so shots reach the hoop cleanly
             ball.vx = dx * 0.22;
             ball.vy = dy * 0.22;
             ball.active = true;
@@ -227,6 +237,12 @@
         }
 
         function update() {
+            // Animate defender obstacle (speed increases slightly with score)
+            defender.y += defender.speed;
+            if (defender.y <= defender.minY || defender.y >= defender.maxY) {
+                defender.speed = -defender.speed;
+            }
+
             if (ball.active) {
                 ball.vy += 0.35; // gravity
                 ball.x += ball.vx;
@@ -247,6 +263,15 @@
                     ball.vy = -ball.vy * 0.5;
                 }
 
+                // Defender collision check (deflects the ball away!)
+                if (ball.x + ball.radius > defender.x &&
+                    ball.x - ball.radius < defender.x + defender.width &&
+                    ball.y + ball.radius > defender.y &&
+                    ball.y - ball.radius < defender.y + defender.height) {
+                    ball.vx = -ball.vx * 0.7 - 1;
+                    ball.vy = -ball.vy * 0.5;
+                }
+
                 // Scoring check
                 if (!hoop.scored && 
                     ball.x > hoop.x - 25 && 
@@ -257,6 +282,8 @@
                     score++;
                     scoreEl.textContent = score;
                     hoop.scored = true;
+                    // Slightly increase defender challenge
+                    defender.speed = defender.speed > 0 ? defender.speed + 0.1 : defender.speed - 0.1;
                 }
 
                 // Out of bounds reset
@@ -273,12 +300,21 @@
             ctx.fillStyle = "#d35400";
             ctx.fillRect(0, 370, canvas.width, 30);
 
-            // Backboard
+            // Backboard & Target Box
             ctx.fillStyle = "#ffffff";
             ctx.fillRect(backboard.x, backboard.y, backboard.width, backboard.height);
             ctx.strokeStyle = "#e74c3c";
             ctx.lineWidth = 3;
             ctx.strokeRect(backboard.x, backboard.y, backboard.width, backboard.height);
+            // Inner target rectangle
+            ctx.strokeRect(backboard.x, backboard.y + 20, 3, 30);
+
+            // Moving Defender Obstacle
+            ctx.fillStyle = "#2d3436";
+            ctx.fillRect(defender.x, defender.y, defender.width, defender.height);
+            ctx.strokeStyle = "#ff7675";
+            ctx.lineWidth = 2;
+            ctx.strokeRect(defender.x, defender.y, defender.width, defender.height);
 
             // Net lines
             ctx.strokeStyle = "rgba(255,255,255,0.7)";
