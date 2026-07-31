@@ -209,8 +209,9 @@
             const dx = startX - currentX;
             const dy = startY - currentY;
 
-            ball.vx = dx * 0.14;
-            ball.vy = dy * 0.14;
+            // Increased velocity multiplier from 0.14 to 0.22 so shots reach the hoop cleanly
+            ball.vx = dx * 0.22;
+            ball.vy = dy * 0.22;
             ball.active = true;
             hoop.scored = false;
             shots++;
