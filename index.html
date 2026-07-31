@@ -6,7 +6,7 @@
     <title>My Portfolio & Basketball Game</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f4f4f9;
@@ -23,10 +23,17 @@
         }
 
         h1 {
-            color: #2c3e50;
+            color: #0984e3;
+            margin-bottom: 15px;
         }
 
-        /* Right Side: Basketball Game Container (Shifted Right) */
+        p {
+            font-size: 1.1rem;
+            color: #636e72;
+            line-height: 1.6;
+        }
+
+        /* Right Side: Basketball Game Container */
         .game-section {
             flex: 1;
             display: flex;
@@ -64,6 +71,17 @@
             font-weight: bold;
             margin-bottom: 15px;
         }
+
+        /* Responsive design for mobile screens */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            .portfolio-section, .game-section {
+                max-width: 100%;
+                padding: 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -72,7 +90,7 @@
     <div class="portfolio-section">
         <h1>Welcome to My Website</h1>
         <p>Hi! I am building and updating this site to showcase my projects and have some fun interactive elements.</p>
-        <p>Check out the basketball game on the right—use your mouse to aim and shoot with skill!</p>
+        <p>Check out the basketball game on the right—use your mouse to aim, pull back for power, and release to score!</p>
     </div>
 
     <!-- Right Side: Basketball Game -->
@@ -81,10 +99,11 @@
         <div class="scoreboard">Score: <span id="score">0</span> | Shots: <span id="shots">0</span></div>
         <canvas id="gameCanvas" width="450" height="500"></canvas>
         <div class="game-instructions">
-            <strong>How to play:</strong> Click and drag anywhere on the canvas to set your aim and power. Release to shoot!
+            <strong>How to play:</strong> Click and drag anywhere near the ball to set your aim and power. Release to shoot!
         </div>
     </div>
 
+    <!-- Game Script -->
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
@@ -234,7 +253,6 @@
             ctx.strokeRect(backboard.x, backboard.y, backboard.width, backboard.height);
 
             // Draw Hoop & Net Graphics
-            // Net lines
             ctx.strokeStyle = "rgba(255,255,255,0.7)";
             ctx.lineWidth = 2;
             ctx.beginPath();
@@ -255,7 +273,6 @@
                 ctx.setLineDash([4, 4]);
                 ctx.beginPath();
                 ctx.moveTo(ball.x, ball.y);
-                // Show pull-back vector direction
                 ctx.lineTo(ball.x + (startX - currentX), ball.y + (startY - currentY));
                 ctx.stroke();
                 ctx.setLineDash([]); // reset line dash
